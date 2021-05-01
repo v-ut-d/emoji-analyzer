@@ -1,4 +1,4 @@
-# emoji-analyzer
+# emoji-analyzer v1.1
 
 ##  概要
 *   そのサーバーの絵文字の使用回数を数えるbotです。
