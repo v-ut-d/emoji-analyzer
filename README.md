@@ -1,4 +1,4 @@
-# emoji-analyzer v1.1
+# Emoji Analyzer v1.1
 
 ##  概要
 *   そのサーバーの絵文字の使用回数を数えるbotです。
@@ -7,8 +7,10 @@
     *   他のbotの投稿は取得します。
 *   数えた結果は、csvで投下させるか、メッセージに使われた回数の多い順/少ない順でメッセージとして投稿させることができます。
 
-## 使い方
+##  導入
+*   サーバー管理者の方が[こちらのリンク](https://discord.com/api/oauth2/authorize?client_id=837676143104622592&permissions=100352&scope=bot)から招待してください。
 
+## 使い方
 *   コマンド：
 `emoji-analyzer analyze [arg1[, arg2[, arg3]]]`
 
