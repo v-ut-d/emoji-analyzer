@@ -8,24 +8,30 @@ import re
 
 load_dotenv()
 TOKEN = os.environ['BOT_TOKEN']
-path = 'dict.csv'
-bot = commands.Bot(command_prefix = '!')
+bot = commands.Bot(command_prefix = 'emoji-analyzer ')
 
 @bot.event
 async def on_ready():
     print('bot logged in')
 
 @bot.command()
-async def analyze(ctx, arg1=(date.today() - timedelta(days=7)).isoformat(), arg2=date.today().isoformat(), arg3='10'):
+async def analyze(ctx, arg1='csv', arg2=(date.today() - timedelta(days=7)).isoformat(), arg3=date.today().isoformat()):
     if ctx.author.bot:
         return
     async with ctx.channel.typing():
         dict = {}
         guild = ctx.guild
-        bound1 = datetime.fromisoformat(arg1)
-        bound2 = datetime.fromisoformat(arg2)
+        if re.fullmatch(r'([ad]\d+)|(csv)', arg1) == None:
+            await ctx.channel.send('第1引数は`csv`とするか`a10` `d20`のように入力してください。')
+            return
+        try:
+            bound1 = datetime.fromisoformat(arg2)
+            bound2 = datetime.fromisoformat(arg3)
+        except ValueError:
+            await ctx.channel.send('第2・第3引数はISOフォーマットで`2000-01-01`のように入力してください。')
+            return
         if bound1 >= bound2:
-            await ctx.channel.send('引数が不正です。')
+            await ctx.channel.send('第2引数の日付が第1引数の日付よりも後になるように入力してください。')
             return
         for emoji in guild.emojis:
             if emoji.is_usable() and not(emoji.animated):
@@ -63,18 +69,24 @@ async def analyze(ctx, arg1=(date.today() - timedelta(days=7)).isoformat(), arg2
         for key, count in sorted(dict.items()):
             data += [[key, count]]
         
-        std = sorted(data, key=lambda x:x[1])
-        with open('data.csv', 'w') as file:
-            writer = csv.writer(file, lineterminator='\n')
-            writer.writerows(std)
+        std = sorted(data, key=lambda x:x[1], reverse=(arg1[0] == 'd'))
 
-        n = min([int(arg3),len(std)])
+        if arg1 == 'csv':
+            path = 'csv/' + datetime.now().replace(microsecond=0).isoformat() + '.csv'
+            with open(path, 'w') as file:
+                writer = csv.writer(file, lineterminator='\n')
+                writer.writerows(std)
+            await ctx.send(file=discord.File(path))
+            os.remove(path)
+            return
+
+        n = min([int(arg1[1:]),len(std)])
         for i in range(n):
             if i%20 == 0:
                 content = ''
             content += '\n' + std[i][0] + ' : ' + str(std[i][1])
             if i%20 == 19 or i == n-1:
-                await ctx.channel.send(content)
+                await ctx.send(content)
 
 def setup(bot):
     bot.add_command(analyze)
