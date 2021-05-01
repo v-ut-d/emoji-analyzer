@@ -7,7 +7,7 @@ import os
 import re
 
 load_dotenv()
-TOKEN = os.environ['BOT_TOKEN']
+TOKEN = os.environ['EMOJI_ANALYZER_BOT_TOKEN']
 bot = commands.Bot(command_prefix = 'emoji-analyzer ')
 
 @bot.event
