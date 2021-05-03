@@ -6,6 +6,8 @@ import csv
 import os
 import re
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 load_dotenv()
 TOKEN = os.environ['EMOJI_ANALYZER_BOT_TOKEN']
 bot = commands.Bot(command_prefix = 'emoji-analyzer ')
