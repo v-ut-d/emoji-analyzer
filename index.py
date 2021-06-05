@@ -91,14 +91,14 @@ async def analyze(ctx, arg1='csv', arg2='today-7', arg3='today'):
             await ctx.send(file=discord.File(path))
             os.remove(path)
             return
-
-        n = min([int(arg1[1:]),len(std)])
-        for i in range(n):
-            if i%20 == 0:
-                content = ''
-            content += '\n' + std[i][0] + ' : ' + str(std[i][1])
-            if i%20 == 19 or i == n-1:
-                await ctx.send(content)
+        else:
+            n = min([int(arg1[1:]),len(std)])
+            for i in range(n):
+                if i%20 == 0:
+                    content = ''
+                content += '\n' + std[i][0] + ' : ' + str(std[i][1])
+                if i%20 == 19 or i == n-1:
+                    await ctx.send(content)
 
 def setup(bot):
     bot.add_command(analyze)
