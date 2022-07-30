@@ -65,9 +65,9 @@ async def analyze(ctx, arg1='csv', arg2='today-7', arg3='today'):
                                 dict[key] += 1
                     except Exception as e:
                         print(e)
-                emojistrs = re.findall(r'\<\:.+?\:\d{18}\>', message.content)
+                emojistrs = re.findall(r'\<\:.+?\:\d{16,19}\>', message.content)
                 for emojistr in emojistrs:
-                    id = re.search(r'\d{18}', emojistr).group()
+                    id = re.search(r'\d{16,19}', emojistr).group()
                     try:
                         if bot.get_emoji(int(id)) != None:
                             dict[emojistr] += 1
